@@ -22,7 +22,7 @@ abstract contract AbstractUniLocker is IUniswapLocker, Ownable, ERC721Enumerable
         address owner
     ) ERC721(name, symbol) Ownable(owner) {
         feeTo = msg.sender;
-        feeToRate = 600;
+        feeToRate = 900;
         _tokenIDTracker = 1;
     }
 
@@ -59,20 +59,6 @@ abstract contract AbstractUniLocker is IUniswapLocker, Ownable, ERC721Enumerable
 
         emit Lock(lpToken, tokenId, amountOrId, unlockBlock, msg.sender);
         return tokenId;
-    }
-
-    function unlock(uint256 tokenId) public virtual override {
-        LockItem storage item = lockItems[tokenId];
-        require(item.unlockBlock <= block.number, "UniLocker: still locked");
-
-        address _tokenOwner = ownerOf(tokenId);
-        require(_tokenOwner == msg.sender, "UniLocker: not the LP owner");
-
-        _burn(tokenId);
-        _transferLP(item.lpToken, address(this), _tokenOwner, item.amountOrId);
-
-        delete lockItems[tokenId];
-        emit Unlock(item.lpToken, tokenId, item.amountOrId, _tokenOwner);
     }
 
     function _transferLP(

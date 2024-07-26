@@ -43,13 +43,6 @@ interface IUniswapLocker is IERC721Enumerable {
         uint256 amountOrId,
         uint256 unlockBlock
     ) external returns (uint256 id);
-
-    /**
-     * unlock lp token in this contract
-     * @param _id the id of the lp token lock item to unlock
-     */
-    function unlock(uint256 _id) external;
-
     /**
      * claim profit from the lp token
      * @param _id the id of the lp token lock item to claim profit
